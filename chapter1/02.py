@@ -1,5 +1,7 @@
 str1 = "パトカー"
 str2 = "タクシー"
-ans = "".join([c1 + c2 for c1, c2 in zip(str1, str2)])
+ans = ""
+for i in range(4):
+    ans += str1[i] + str2[i]
 
 print(ans)
