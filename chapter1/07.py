@@ -1,8 +1,17 @@
+from string import Template
+
 def temp(x, y, z):
-    return x + "時の" + y + "は" + z
+    str1 = Template("$X 時の $Y は $Z")
+    result = str1.substitute(X=x, Y=y, Z=z)
+    return result
 
-x = input("x:")
-y = input("y:")
-z = input("z:")
+def main():
+    x = input("x:")
+    y = input("y:")
+    z = input("z:")
+    
+    result = temp(x, y, z)
+    print(result)
 
-print(temp(x, y, z))
+if __name__ == "__main__":
+    main()
