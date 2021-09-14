@@ -1,4 +1,8 @@
-str = "stressed"
-ans = str[::-1]
+def main():
+    str = "stressed"
+    ans = str[::-1]
+    
+    print(ans)
 
-print(ans)
+if __name__ == "__main__":
+    main()
