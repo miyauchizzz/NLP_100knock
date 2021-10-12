@@ -12,26 +12,23 @@ def main():
     X_test = pd.read_csv('./X_test.txt', sep='\t')
 
     def objective_clf(trial):
-    l1_ratio = trial.suggest_uniform('l1_ratio', 0, 1)
-    C = trial.suggest_loguniform('C', 1e-4, 1e4)
+        l1_ratio = trial.suggest_uniform('l1_ratio', 0, 1)
+        C = trial.suggest_loguniform('C', 1e-4, 1e4)
+        
+        clf = LogisticRegression(random_state=42,
+                                max_iter=10,
+                                penalty='elasticnet',
+                                solver='saga',
+                                l1_ratio=l1_ratio,
+                                C=C)
+        clf.fit(X_train, train['CATEGORY'])
 
-    clf = LogisticRegression(random_state=42,
-                            max_iter=10,
-                            penalty='elasticnet',
-                            solver='saga',
-                            l1_ratio=l1_ratio,
-                            C=C)
-    clf.fit(X_train, train['CATEGORY'])
+        valid_pred = (clf.predict_proba(X_valid), clf.predict(X_valid))
 
-    valid_pred = (clf.predict_proba(X_valid), clf.predict(X_valid))
+        valid_accuracy = accuracy_score(valid['CATEGORY'], valid_pred[1])
 
-    valid_accuracy = accuracy_score(valid['CATEGORY'], valid_pred[1])
+        return valid_accuracy
 
-    return valid_accuracy
-
-
-    clf = LogisticRegression(random_state=42, max_iter=10000)
-    clf.fit(X_train, train['CATEGORY'])
 
     study = optuna.create_study(direction='maximize')
     study.optimize(objective_clf, n_trials=10)
